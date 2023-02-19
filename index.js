@@ -30,14 +30,13 @@ class newQuestion{
     createElement(){
         let obj = {};
         if(questionArr.length == 0){
-            obj.id = 1; 
+            obj.id = 0; 
         }else{
             obj.id = questionArr[questionArr.length - 1].id+1;
         }
         obj.subject = this.subjectInput.value;
         obj.question = this.question.value;
         obj.response = [];
-        obj.upvotes = 0 ;
         if(obj.question == "" || obj.subject == ""){
             alert("Please Enter value");
         }else{
@@ -101,11 +100,13 @@ class responsePage{
         form.appendChild(this.commentField);
         form.appendChild(this.responseSubmitBtn);
     }
-    setResponse(name,response){
-        let string = this.responseDiv.innerHTML;
-        string+= `<h3>${name}</h3><p>${response}</p>`;
-        console.log(string);
-        this.responseDiv.innerHTML =string;
+    setResponse(data){
+        let stringToAppend = "";
+        data.response.forEach(function(element){
+            // console.log(element);
+            stringToAppend+=`<h3>${element.name}</h3><p>${element.response}</p>`
+        })
+        this.responseDiv.innerHTML=stringToAppend;
     }
 }
 
@@ -183,8 +184,7 @@ function openBtn(id){
         if(name == "" || response == ""){
             return ;
         }
-        addResponse(name,response,id);
-        responsep.setResponse(name,response);
+        addResponse(name,response,id,responsep);
     })
 }
 
@@ -217,29 +217,50 @@ function deleteEntry(id){
 }
 
 
-function addResponse(name,response,id){
+function addResponse(name,response,id, responsep){
     questionArr = questionArr.map(function(element){
         if(element.id == id){
             let obj = {}
             obj.name = name;
             obj.response = response;
+            obj.vote = 0 ;
+            if(element.response.length == 0){
+                obj.id = 1;
+            }else{
+                obj.id = element.response[element.response.length - 1].id +1 ;
+            }
             element.response.push(obj);
+            element.response.sort((a,b)=>{
+                return  b.vote -  a.vote;
+            })
+            responsep.setResponse(element);
         }
         return element;
     })
+    
+    console.log(questionArr);
+    
     localStorage.setItem("question",JSON.stringify(questionArr));
 }
 
 
-function search(searchWord){
-    if(searchWord.length == 0){
-        return ;
-    }
-    let string = questionListDisp.innerHTML;
-    let i =0;
-    let start =0;
-    let end =0;
-}
+// function search(searchWord){
+//     if(searchWord.length == 0){
+//         return ;
+//     }
+//     let string = questionListDisp.innerHTML;
+//     let i =0;
+//     let start =0;
+//     let end =0;
+//     for(;i<string.length;++i){
+//         if(string[i]==searchWord[0]){
+//             isMatch(){
+
+//             }
+//         }
+//     }
+    
+// }
 
 
 function onKeyUp(){
