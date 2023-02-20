@@ -85,7 +85,7 @@ class responsePage{
         let stringToAppend = "";
         data.response.forEach(function(element){
             console.log(element);
-            stringToAppend+=`<h3><button class=up-down-btn onclick=upvote_click(${element.id},${data.id})>+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id})">-</button>${element.response}</p>`
+            stringToAppend+=`<h3><button class=up-down-btn onclick=upvote_click(${element.id},${data.id})>+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id},${data.id})">-</button>${element.response}</p>`
         })
         this.responseDiv.innerHTML=stringToAppend;
         
@@ -105,7 +105,7 @@ class responsePage{
         let stringToAppend = "";
         data.response.forEach(function(element){
             // console.log(element);
-            stringToAppend+=`<h3><button class="up-down-btn" onclick="upvote_click(${element.id},${data.id})">+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click()">-</button>${element.response}</p>`
+            stringToAppend+=`<h3><button class="up-down-btn" onclick="upvote_click(${element.id},${data.id})">+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id},${data.id})">-</button>${element.response}</p>`
         })
         this.responseDiv.innerHTML=stringToAppend;
     }
@@ -277,6 +277,26 @@ function upvote_click(repId,id){
             element.response.forEach(function(rep){
                 if(rep.id == repId){
                     rep.vote = rep.vote+1;
+                }
+            })
+            element.response.sort((a,b)=>{
+                return  b.vote -  a.vote;
+            })
+            responsep.setResponse(element);
+        }
+    });
+    console.log(questionArr);
+    localStorage.setItem("question",JSON.stringify(questionArr));
+}
+
+function downvote_click(repId,id){
+    console.log(responsep);
+    console.log(repId,"  ",id);
+    questionArr.forEach(function(element){
+        if(element.id == id){
+            element.response.forEach(function(rep){
+                if(rep.id == repId){
+                    rep.vote = rep.vote-1;
                 }
             })
             element.response.sort((a,b)=>{
