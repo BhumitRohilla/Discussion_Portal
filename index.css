@@ -217,3 +217,10 @@ nav {
     width: 100%;
   }
 }
+
+
+.up-down-btn{
+  width: 10px;
+  border:  none;
+  margin-right: 20px;
+}

@@ -54,6 +54,7 @@ class newQuestion{
 class responsePage{
     constructor(data){
         this.question = data;
+        console.log(this.question);
         this.questionTitle = document.createElement("h3");
         this.questionDiv = document.createElement("div");
         this.resolveBtn = document.createElement("button");
@@ -83,8 +84,8 @@ class responsePage{
         this.questionDiv.innerHTML = `<h3 class="response-section-heading p-5">${data.subject}</h3><p class="p-5">${data.question}</p>`;
         let stringToAppend = "";
         data.response.forEach(function(element){
-            // console.log(element);
-            stringToAppend+=`<h3>${element.name}</h3><p>${element.response}</p>`
+            console.log(element);
+            stringToAppend+=`<h3><button class=up-down-btn onclick=upvote_click(${element.id},${data.id})>+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id})">-</button>${element.response}</p>`
         })
         this.responseDiv.innerHTML=stringToAppend;
         
@@ -104,7 +105,7 @@ class responsePage{
         let stringToAppend = "";
         data.response.forEach(function(element){
             // console.log(element);
-            stringToAppend+=`<h3>${element.name}</h3><p>${element.response}</p>`
+            stringToAppend+=`<h3><button class="up-down-btn" onclick="upvote_click(${element.id},${data.id})">+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click()">-</button>${element.response}</p>`
         })
         this.responseDiv.innerHTML=stringToAppend;
     }
@@ -117,9 +118,8 @@ let questionListDisp =  document.getElementById("list-container");
 let questionArr = [];
 let newQuestionBtn = document.getElementById("new-question-btn");
 let searchBox = document.getElementById("search-box");
-
+let responsep = null;
 console.log(questionListDisp);
-
 
 window.addEventListener("load",function(){
     welcomePage = new newQuestion();
@@ -171,7 +171,7 @@ function openBtn(id){
         }
         return false;
     })[0];
-    let responsep = new responsePage(data);
+    responsep = new responsePage(data);
     form.innerHTML = "";
     welcomePage = null;
     responsep.append(form);
@@ -266,4 +266,25 @@ function addResponse(name,response,id, responsep){
 function onKeyUp(){
     console.log(searchBox.value);
     search(searchBox.value);
+}
+
+
+function upvote_click(repId,id){
+    console.log(responsep);
+    console.log(repId,"  ",id);
+    questionArr.forEach(function(element){
+        if(element.id == id){
+            element.response.forEach(function(rep){
+                if(rep.id == repId){
+                    rep.vote = rep.vote+1;
+                }
+            })
+            element.response.sort((a,b)=>{
+                return  b.vote -  a.vote;
+            })
+            responsep.setResponse(element);
+        }
+    });
+    console.log(questionArr);
+    localStorage.setItem("question",JSON.stringify(questionArr));
 }
