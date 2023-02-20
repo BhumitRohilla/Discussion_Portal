@@ -247,8 +247,12 @@ nav {
 }
 
 .star-svg path:hover{
-  fill: gray;
-  
+  cursor:pointer;
+}
+
+
+.star-svg path:active{
+  fill: rgb(58, 57, 57);
   cursor:pointer;
 }
 
