@@ -37,6 +37,8 @@ class newQuestion{
         obj.subject = this.subjectInput.value;
         obj.question = this.question.value;
         obj.response = [];
+        obj.askedTime = counter;
+        obj.favourate = false;
         if(obj.question == "" || obj.subject == ""){
             alert("Please Enter value");
         }else{
@@ -119,6 +121,11 @@ let questionArr = [];
 let newQuestionBtn = document.getElementById("new-question-btn");
 let searchBox = document.getElementById("search-box");
 let responsep = null;
+let intervalID ; 
+let counter ;
+let showingFavourate = false;
+
+
 console.log(questionListDisp);
 
 window.addEventListener("load",function(){
@@ -127,6 +134,19 @@ window.addEventListener("load",function(){
     welcomePage.button.addEventListener("click",function(){
         welcomePage.createElement();
     })
+    counter = (JSON.parse(this.localStorage.getItem("counter")));
+    
+    if(counter == undefined){
+        counter = 0;
+    }
+    intervalID = this.setInterval(function(){
+        counter++;
+        localStorage.setItem("counter",JSON.stringify(counter));
+        console.log(counter);
+        changeTiming();
+    },1000*60);
+    
+    
     questionArr = JSON.parse(this.localStorage.getItem("question"));
     console.log(questionArr);
     if(questionArr!=undefined){
@@ -134,6 +154,7 @@ window.addEventListener("load",function(){
     }else{
         questionArr = [];
     }
+
 })
 
 function initialList(list){
@@ -144,24 +165,26 @@ function initialList(list){
 }
 
 function makeList(element){
-    let holder = "";
-    holder+= `<h2>${element.subject}</h2>`
-    holder+= `<p>${element.question}</p>`
-    let btn = document.createElement("button");
-    btn.classList.add("list-button");
+    let holder = "<div class=questionListButton>";
+    holder+= `<button class="list-button" onclick="openBtn(${element.id})"><h2>${element.subject}</h2>`
+    holder+= `<p>${element.question}</p></button>`
+
+    // console.log(typeof counter );
+    holder+=`<div class="TimerSpan">since <span class="Timer">${counter - parseInt(element.askedTime)}</span> min</div>`;
+    holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
+
+    holder+="</div>";
+    let btn = document.createElement("div");
+    btn.classList.add("div-list-btn-container");
     btn.innerHTML = holder;
     btn.setAttribute("id",element.id);
-    btn.addEventListener("click",function(){
-        openBtn(element.id);
-    });
+    // btn.addEventListener("click",function(){
+    //     openBtn(element.id);
+    // });
     questionListDisp.appendChild(btn)
 }
 
 
-
-function append(){
-    console.log("tess");
-}
 
 
 function openBtn(id){
@@ -263,12 +286,6 @@ function addResponse(name,response,id, responsep){
 // }
 
 
-function onKeyUp(){
-    console.log(searchBox.value);
-    search(searchBox.value);
-}
-
-
 function upvote_click(repId,id){
     console.log(responsep);
     console.log(repId,"  ",id);
@@ -307,4 +324,79 @@ function downvote_click(repId,id){
     });
     console.log(questionArr);
     localStorage.setItem("question",JSON.stringify(questionArr));
+}
+
+
+
+function onKeyUp(){
+    search(searchBox.value);
+}
+
+
+function search(val){
+    console.log(val);
+
+    if(val == "!FAV"){
+        displayFav();
+        return;
+    }
+
+    if(val == ""){
+        questionListDisp.innerHTML="";
+        initialList(questionArr);
+        console.log(questionArr);
+        return ;
+    }
+    let content = questionListDisp.innerHTML;
+    let stack =[];
+    
+
+
+
+}
+
+function favourate(id){
+    questionArr.forEach(function(element){
+        if(element.id == id){
+            element.favourate = !element.favourate;
+
+        }
+    })
+    localStorage.setItem("question",JSON.stringify(questionArr));
+    console.log("test");
+}
+
+
+function displayFav(){
+    console.log("Test");
+    questionListDisp.innerHTML = '';
+    questionArr.forEach(function(element){
+        if(element.favourate){
+            makeList(element);
+        }
+    })
+}
+
+
+
+function favourateButtonPress(){
+    let button = document.getElementById("favourate-button");
+    console.log(button);
+    if(showingFavourate == false){
+        button.classList.add("favourte-button-active");
+        showingFavourate = true;
+        displayFav();
+    }else{
+        button.classList.remove("favourte-button-active");
+        showingFavourate = false;
+        questionListDisp.innerHTML="";
+        initialList(questionArr);
+        console.log(questionArr);
+    }
+    
+}
+
+
+function changeTiming(){
+    console.log("Test");
 }

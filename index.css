@@ -17,6 +17,7 @@ nav {
 .d-flex {
   display: flex;
   gap: 20px;
+  overflow: hidden;
   padding: 0px 20px;
 }
 
@@ -31,7 +32,6 @@ nav {
   width: 40%;
   height: 700px;
   overflow: scroll;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -85,7 +85,7 @@ nav {
 
 #search-box {
   height: 40px;
-  flex-flow: 1 1.3 140px;
+  flex-flow: 1 1.4 140px;
   font-size: 1.2rem;
 }
 
@@ -113,9 +113,21 @@ nav {
   padding: 3px 5px;
   border: 0;
   background-color: whitesmoke;
+
+}
+
+.favourate-btn{
+  background-color: whitesmoke;
+  outline: none;
+  width: 40px ;
+}
+
+.div-list-btn-container{
+  border: none;
   outline: 1px solid gray;
-  border-left: transparent;
-  border-right: transparent;
+
+  width: 100%;
+  margin: 0 auto;
 }
 
 .list-button:hover {
@@ -206,7 +218,7 @@ nav {
     padding: 5px;
 }
 
-@media screen and (max-width: 572px) {
+@media screen and (max-width: 900px ) {
   .d-flex {
     flex-direction: column;
   }
@@ -223,4 +235,40 @@ nav {
   width: 10px;
   border:  none;
   margin-right: 20px;
+}
+
+
+.questionListButton{
+  display: flex;
+
+}
+
+.TimerSpan{
+  width: 100px;
+  height: 100%;
+  display: block;
+}
+
+.star-svg{
+  width: 40px;
+  height: 40px;
+}
+.star-svg path{
+  fill: whitesmoke;
+}
+
+.star-svg path:hover{
+  fill: gray;
+
+  cursor:pointer;
+}
+
+#favourate-button{
+  background-color: whitesmoke;
+  border: none;
+}
+
+
+.favourte-button-active path{
+  fill: #008080;
 }
