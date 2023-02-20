@@ -24,13 +24,13 @@ nav {
 #left-container {
   background-color: whitesmoke;
   width: 50%;
-  height: 740px;
+  height: calc( 100vh -58px);
 }
 
 #right-container {
   background-color: white;
   width: 40%;
-  height: 700px;
+  height: calc( 100vh -58px);
   overflow: scroll;
   display: flex;
   flex-direction: column;
@@ -154,7 +154,7 @@ nav {
 #list-container{
     overflow: scroll;
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
 
 .large{
@@ -218,17 +218,6 @@ nav {
     padding: 5px;
 }
 
-@media screen and (max-width: 900px ) {
-  .d-flex {
-    flex-direction: column;
-  }
-  #left-container {
-    width: 100%;
-  }
-  #right-container {
-    width: 100%;
-  }
-}
 
 
 .up-down-btn{
@@ -240,7 +229,7 @@ nav {
 
 .questionListButton{
   display: flex;
-
+  
 }
 
 .TimerSpan{
@@ -259,7 +248,7 @@ nav {
 
 .star-svg path:hover{
   fill: gray;
-
+  
   cursor:pointer;
 }
 
@@ -271,4 +260,26 @@ nav {
 
 .favourte-button-active path{
   fill: #008080;
+}
+
+
+.list-favourte-button{
+  width: 30px;
+  height: 30px;
+  
+}
+
+
+@media screen and (max-width: 900px ) {
+  .d-flex {
+    flex-direction: column;
+  }
+  #left-container {
+    width: 100%;
+    height: 40vh;
+    margin-bottom: 20px;
+  }
+  #right-container {
+    width: 100%;
+  }
 }
