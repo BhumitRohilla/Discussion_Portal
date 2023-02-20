@@ -34,10 +34,13 @@ class newQuestion{
         }else{
             obj.id = questionArr[questionArr.length - 1].id+1;
         }
+
         obj.subject = this.subjectInput.value;
         obj.question = this.question.value;
         obj.response = [];
-        obj.askedTime = counter;
+        obj.day = currentDate.getDate();
+        obj.hour = currentDate.getHours();
+        obj.minute = currentDate.getMinutes();
         obj.favourate = false;
         if(obj.question == "" || obj.subject == ""){
             alert("Please Enter value");
@@ -124,7 +127,7 @@ let responsep = null;
 let intervalID ; 
 let counter ;
 let showingFavourate = false;
-
+let currentDate = new Date;
 
 console.log(questionListDisp);
 
@@ -170,7 +173,28 @@ function makeList(element){
     holder+= `<p>${element.question}</p></button>`
 
     // console.log(typeof counter );
-    holder+=`<div class="TimerSpan">since <span class="Timer">${counter - parseInt(element.askedTime)}</span> min</div>`;
+    let currentDate = new Date;
+    let day =currentDate.getDate() - element.day;
+    let hour = currentDate.getHours() - element.hour;
+    let min =  currentDate.getMinutes() - element.minute;
+
+    if(min < 0){
+        min+=60;
+        hour--;
+    }
+
+    if(hour < 0 ){
+        hour+=24;
+        day--;
+    }
+
+    if(day < 0){
+        day+=30;
+    }
+
+    console.log(day);
+    holder+=`<div class="TimerSpan">since <span class="Timer">`;
+    holder+=`${day}:${hour}:${min}</span> Time</div>`
     holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
 
     holder+="</div>";
@@ -342,17 +366,63 @@ function search(val){
     }
 
     if(val == ""){
+        console.log(questionArr);
         questionListDisp.innerHTML="";
         initialList(questionArr);
         console.log(questionArr);
         return ;
     }
-    let content = questionListDisp.innerHTML;
-    let stack =[];
+
+    questionListDisp.innerHTML = "";
+
+    question = JSON.parse(localStorage.getItem("question"));
+
+    console.log(question);
+
+    question = question.filter(function(element){
+        let heading = element.subject;
+        let questions = element.question;
+
+        if(heading.includes(val)){
+            return true;
+        }
+        if(questions.includes(val)){
+            return true;
+        }
+        return false;
+    })
+
+    console.log(question);
+    searchListCreation(question,val);
+}
+
+
+function searchListCreation(list , val){
+    console.log(list ,val);
+    let heading = list.heading;
+
+    console.log("searchListCreating");
+
+    list.forEach(function(element){
+        console.log(element.subject);
+        console.log(element.question);
+        if(element.subject.includes(val)){
+            // console.log(element.subject.search(val));
+            let index = element.subject.search(val);
+            element.subject = element.subject.slice(0,index)+"<span style='background-color:yellow'>"+element.subject.slice(index,val.length+index)  +"</span>" +element.subject.slice(val.length+index);
+            console.log(element.subject);
+        }
+        if(element.question.includes(val)){
+            let index = element.question.search(val);
+            console.log(element.question);
+            element.question = element.question.slice(0,index)+"<span style='background-color:yellow'>"+element.question.slice(index,val.length+index)  +"</span>" +element.question.slice(val.length+index);
+        }
+    })
+
+
+    initialList(list);
+
     
-
-
-
 }
 
 function favourate(id){
@@ -396,7 +466,51 @@ function favourateButtonPress(){
     
 }
 
+function setTimeNow(){
+    let day =currentDate.getDate() - element.day;
+    let hour = currentDate.getHours() - element.hour;
+    let min =  currentDate.getMinutes() - element.minute;
+
+    if(min < 0){
+        min+=60;
+        hour--;
+    }
+
+    if(hour < 0 ){
+        hour+=24;
+        day--;
+    }
+
+    if(day < 0){
+        day+=30;
+    }
+    let string =``;
+    return string;
+}
+
 
 function changeTiming(){
-    console.log("Test");
+    let a = document.getElementsByClassName("Timer");
+    Array.from(a).forEach(function(element){
+        let a = element.innerText;
+        a = a.split(':');
+        console.log(a);
+        a[2]++;
+        if(a[2]>60){
+            a[1]++;
+            a[2]=0;
+        }
+        if(a[1] > 24){
+            a[0]++;
+            a[1]=0;
+        }
+
+        if(a[0] >30){
+            a[0]=0;
+        }
+        a = a.join(':');
+        console.log(a);
+        element.innerText = a;
+    })
 }
+
