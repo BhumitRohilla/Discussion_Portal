@@ -202,7 +202,7 @@ function makeList(element){
 
     console.log(day);
     holder+=`<div class="TimerSpan">since <span class="Timer">`;
-    holder+=`<br/>${day} days<br/> ${hour} hour<br/> ${min} min<br/></span> Time</div>`
+    holder+=`Calculating</span></div>`
     // holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
 
 
@@ -524,7 +524,16 @@ function setTimeNow(element){
     if(day < 0){
         day+=30;
     }
-    let string = `<br/>${day} days<br/> ${hour} hour<br/> ${min} min<br/>`;
+    
+    let string = ``;
+    if(day != 0 ){
+        string+=`${day} days`;
+    }else if(hour !=0 ){
+        string+=`${hour} hour`;
+    }else{
+        string+=`${min} min`;
+    }
+
     return string;
 }
 

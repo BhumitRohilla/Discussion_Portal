@@ -124,7 +124,6 @@ nav {
 
 .div-list-btn-container{
   border: none;
-  outline: 1px solid gray;
 
   width: 100%;
   margin: 0 auto;
@@ -229,13 +228,17 @@ nav {
 
 .questionListButton{
   display: flex;
-  
+  position: relative;
+  outline: 1px solid black;
 }
 
 .TimerSpan{
-  width: 100px;
-  height: 100%;
-  display: block;
+  font-size: 10px;
+position: absolute;
+width: fit-content;
+bottom: 5px;
+right: 0px;
+height: 10px
 }
 
 .star-svg{
