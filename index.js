@@ -133,7 +133,6 @@ let newQuestionBtn = document.getElementById("new-question-btn");
 let searchBox = document.getElementById("search-box");
 let responsep = null;
 let intervalID ; 
-let counter ;
 let showingFavourate = false;
 let currentDate = new Date;
 
@@ -145,34 +144,28 @@ window.addEventListener("load",function(){
     welcomePage.button.addEventListener("click",function(){
         welcomePage.createElement();
     })
-    counter = (JSON.parse(this.localStorage.getItem("counter")));
     
-    if(counter == undefined){
-        counter = 0;
-    }
     intervalID = this.setInterval(function(){
-        counter++;
-        localStorage.setItem("counter",JSON.stringify(counter));
-        console.log(counter);
-        changeTiming();
-    },1000);
-    
-    
-    questionArr = JSON.parse(this.localStorage.getItem("question"));
-    console.log(questionArr);
-    if(questionArr!=undefined){
-        initialList(questionArr);
-    }else{
-        questionArr = [];
-    }
-
+            changeTiming(questionArr);
+    },1000*30);
+        
+        
+        questionArr = JSON.parse(this.localStorage.getItem("question"));
+        console.log(questionArr);
+        if(questionArr!=undefined){
+            initialList(questionArr);
+        }else{
+            questionArr = [];
+        }
+        
+        
 })
 
 function initialList(list){
     Array.from(list).forEach(element => {
         makeList(element);
     });
-    
+    changeTiming(questionArr);
 }
 
 function makeList(element){
@@ -180,7 +173,6 @@ function makeList(element){
     holder+= `<button class="list-button" onclick="openBtn(${element.id})"><h2>${element.subject}</h2>`
     holder+= `<p>${element.question}</p></button>`
 
-    // console.log(typeof counter );
     let currentDate = new Date;
     let day =currentDate.getDate() - element.day;
     let hour = currentDate.getHours() - element.hour;
@@ -202,7 +194,7 @@ function makeList(element){
 
     console.log(day);
     holder+=`<div class="TimerSpan">since <span class="Timer">`;
-    holder+=`Calculating</span></div>`
+    holder+=`0 min</span></div>`
     // holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
 
 
@@ -278,8 +270,6 @@ newQuestionBtn.addEventListener("click",function(){
 })
 
 function deleteEntry(id){
-    let evt = new Event("click");
-    newQuestionBtn.dispatchEvent(evt);
     questionArr = questionArr.filter(function(element){
         if(element.id == id){
             return false;
@@ -289,6 +279,8 @@ function deleteEntry(id){
     console.log(questionArr);
     document.getElementById(id).remove();
     localStorage.setItem("question",JSON.stringify(questionArr));
+    let evt = new Event("click");
+    newQuestionBtn.dispatchEvent(evt);
 }
 
 
@@ -479,11 +471,15 @@ function favourate(id){
 function displayFav(){
     console.log("Test");
     questionListDisp.innerHTML = '';
-    questionArr.forEach(function(element){
+    let favList = questionArr.filter(function(element){
         if(element.favourate){
-            makeList(element);
+            return true;
+        }else{
+            return false;
         }
     })
+    initialList(favList);
+    changeTiming(favList);
 }
 
 
@@ -502,7 +498,6 @@ function favourateButtonPress(){
         initialList(questionArr);
         console.log(questionArr);
     }
-    
 }
 
 function setTimeNow(element){
@@ -538,7 +533,7 @@ function setTimeNow(element){
 }
 
 
-function changeTiming(){
+function changeTiming(arrayList){
     let a = document.getElementsByClassName("Timer");
     console.log(a);
     let day  = currentDate.getDate();
@@ -547,9 +542,13 @@ function changeTiming(){
     
     let index = 0;
 
+
+
+
+
     Array.from(a).forEach(function(element){
         console.log(element.innerHTML);
-        element.innerHTML = setTimeNow(questionArr[index]);
+        element.innerHTML = setTimeNow(arrayList[index]);
         // console.log(questionArr[index++]);
         index++;
     })
