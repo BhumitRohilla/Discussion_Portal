@@ -290,3 +290,21 @@ height: 10px
     width: 100%;
   }
 }
+
+
+.voteDiv{
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  margin-right: 10px;
+}
+
+.voteButton{
+  width: 23px;
+  height: 23px;
+
+}
+
+.voteButton:active path{
+  fill: #008080;
+}
