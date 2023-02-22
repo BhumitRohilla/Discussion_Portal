@@ -41,6 +41,7 @@ class newQuestion {
     obj.day = currentDate.getDate();
     obj.hour = currentDate.getHours();
     obj.minute = currentDate.getMinutes();
+    obj.second = currentDate.getSeconds();
     obj.favourate = false;
     obj.question = obj.question.trim();
     obj.subject = obj.subject.trim();
@@ -177,6 +178,12 @@ function makeList(element) {
   let day = currentDate.getDate() - element.day;
   let hour = currentDate.getHours() - element.hour;
   let min = currentDate.getMinutes() - element.minute;
+  let sec = currentDate.getSeconds() - element.second;
+
+  if(sec < 0){
+    sec += 60;
+    min--;
+  }
 
   if (min < 0) {
     min += 60;
@@ -194,7 +201,7 @@ function makeList(element) {
 
   console.log(day);
   holder += `<div class="TimerSpan">since <span class="Timer">`;
-  holder += `0 min'</span></div>`;
+  holder += `few sec</span></div>`;
   // holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
 
   /*
@@ -497,6 +504,11 @@ function setTimeNow(element) {
   let day = currentDate.getDate() - element.day;
   let hour = currentDate.getHours() - element.hour;
   let min = currentDate.getMinutes() - element.minute;
+  let sec = currentDate.getSeconds() - element.second;
+  if(sec < 0){
+    sec += 60;
+    min--;
+  }
 
   if (min < 0) {
     min += 60;
@@ -517,8 +529,10 @@ function setTimeNow(element) {
     string += `${day} days`;
   } else if (hour != 0) {
     string += `${hour} hour`;
-  } else {
+  } else if (min != 0 ){
     string += `${min} min`;
+  } else {
+    string += `few sec`;
   }
 
   return string;
