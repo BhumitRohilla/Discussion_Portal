@@ -300,6 +300,7 @@ height: 10px;
   width: 24px;
   margin-right: 10px;
   align-items: center;
+  justify-content: center;
 }
 
 .voteButton{
