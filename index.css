@@ -113,7 +113,7 @@ nav {
   padding: 3px 5px;
   border: 0;
   background-color: whitesmoke;
-
+  padding-top: 20px;
 }
 
 .favourate-btn{
@@ -238,7 +238,8 @@ position: absolute;
 width: fit-content;
 bottom: 5px;
 right: 0px;
-height: 10px
+height: 10px;
+
 }
 
 .star-svg{
@@ -297,6 +298,7 @@ height: 10px
   flex-direction: column;
   width: 24px;
   margin-right: 10px;
+  align-items: center;
 }
 
 .voteButton{
@@ -307,4 +309,10 @@ height: 10px
 
 .voteButton:active path{
   fill: #008080;
+}
+
+
+.VoteShow{
+  position: absolute;
+  top:0px;
 }

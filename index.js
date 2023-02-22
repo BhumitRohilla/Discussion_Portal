@@ -171,8 +171,8 @@ function makeList(element) {
   holder +=
     `<div class="voteDiv"><div><svg class="voteButton" onclick="upVoteQuestion(${element.id})" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>i</title><g id="Complete"><g id="thumbs-up"><path d="M7.3,11.4,10.1,3a.6.6,0,0,1,.8-.3l1,.5a2.6,2.6,0,0,1,1.4,2.3V9.4h6.4a2,2,0,0,1,1.9,2.5l-2,8a2,2,0,0,1-1.9,1.5H4.3a2,2,0,0,1-2-2v-6a2,2,0,0,1,2-2h3v10" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></svg></div><div><svg class="voteButton" onclick="downVoteQuestion(${element.id})" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 14C21 14.5523 20.5523 15 20 15H17V3H20C20.5523 3 21 3.44772 21 4V14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 13V5L15.0077 3.6718C14.3506 3.23375 13.5786 3 12.7889 3H7.54138C6.07486 3 4.82329 4.06024 4.5822 5.5068L3.38813 12.6712C3.18496 13.8903 4.12504 15 5.36092 15H10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 15L9.31283 18.4358C9.13411 19.3294 9.64876 20.2163 10.5133 20.5044V20.5044C11.3664 20.7888 12.2987 20.4026 12.7008 19.5983L16 13H17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>`;
   holder += `<button class="list-button" onclick="openBtn(${element.id})"><h2>${element.subject}</h2>`;
-  holder += `<p>${element.question}</p></button>`;
-
+  holder += `<p>${element.question}</p>`;
+  holder += `<span class="VoteShow">Vote:${element.vote}</span></button>`;
   let currentDate = new Date();
   let day = currentDate.getDate() - element.day;
   let hour = currentDate.getHours() - element.hour;
@@ -193,8 +193,8 @@ function makeList(element) {
   }
 
   console.log(day);
-  holder += `<div class="TimerSpan">Vote:${element.vote} since <span class="Timer">`;
-  holder += `0 min</span></div>`;
+  holder += `<div class="TimerSpan">since <span class="Timer">`;
+  holder += `0 min'</span></div>`;
   // holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
 
   /*
@@ -443,7 +443,7 @@ function searchListCreation(list, val) {
 function favourate(id) {
   // console.log(svg);
   var button = document.getElementById(id);
-  button = button.querySelector("svg");
+  button = button.querySelector(".star-svg");
   console.log(button.classList);
   questionArr.forEach(function (element) {
     if (element.id == id) {
