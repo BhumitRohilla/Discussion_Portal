@@ -90,7 +90,9 @@ class responsePage {
     this.commentField.setAttribute("placeholder", "Enter Comment");
     this.responseSubmitBtn.setAttribute("id", "response-submit-btn");
     this.responseSubmitBtn.innerText = "Submit";
-    this.questionDiv.innerHTML = `<h3 class="response-section-heading p-5">${data.subject}</h3><p class="p-5">${data.question}</p>`;
+    let string = data.question.slice();
+    string = makeListWithBr(string);
+    this.questionDiv.innerHTML = `<h3 class="response-section-heading p-5">${data.subject}</h3><p class="p-5">${string}</p>`;
     let stringToAppend = "";
     data.response.forEach(function (element) {
       console.log(element);
@@ -147,7 +149,7 @@ window.addEventListener("load", function () {
 
   intervalID = this.setInterval(function () {
     changeTiming(questionArr);
-  }, 1000 * 30);
+  }, 10000 );
 
   questionArr = JSON.parse(this.localStorage.getItem("question"));
   console.log(questionArr);
@@ -598,4 +600,17 @@ function downVoteQuestion(id) {
     
   
     localStorage.setItem("question",JSON.stringify(questionArr));
+  }
+
+
+  function makeListWithBr(string){
+    let newString ="";
+    for(let i=0;i<string.length;++i){
+      if(string[i] == '\n'){
+        newString += "<br/>";
+      }else{
+        newString+=string[i];
+      }
+    }
+    return newString;
   }
