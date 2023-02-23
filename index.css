@@ -30,7 +30,7 @@ nav {
 
 #right-container {
   background-color: white;
-  width: 40%;
+  width: 50%;
   padding: 20px;
   height: calc( 100vh -58px);
   overflow: scroll;
@@ -38,6 +38,7 @@ nav {
   flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
+  max-height: 90vh;
 }
 
 #new-question-heading {
@@ -140,11 +141,12 @@ nav {
 }
 
 .list-button-active{
-    background-color: #3898fe ;
+    background-color: #3898fe !important;
+    color: white;
 }
 
 .list-button-active:hover{
-    background-color: #66abf5;
+    background-color: #66abf5 !important;
 }
 
 
@@ -192,6 +194,16 @@ nav {
 .response-div{
     background-color: whitesmoke;
     flex-shrink: 0;
+    padding-left: 10px;
+
+}
+
+.response-div p{
+  margin-bottom: 20px;
+}
+
+.response-div h3{
+  margin-bottom: 5px;
 }
 
 #name-field{
@@ -239,16 +251,17 @@ nav {
   position: relative;
   border: 1px solid black;
   overflow: hidden;
+  margin-top: 4px;
 }
 
 .TimerSpan{
-  font-size: 10px;
+  font-size: 13px;
 position: absolute;
 width: fit-content;
 bottom: 5px;
 right: 0px;
 height: 10px;
-
+font-weight: 400;
 }
 
 .star-svg{
@@ -283,7 +296,9 @@ height: 10px;
 .list-favourte-button{
   width: 30px;
   height: 30px;
-  
+  position: absolute;
+  right: 10px;
+  top: 3px;
 }
 
 
@@ -336,4 +351,22 @@ height: 10px;
 
 #right-container::-webkit-scrollbar{
   display: none;
+}
+
+
+.response-div-main-container{
+  display: flex; 
+  /* border: 1px solid black; */
+}
+
+.response-up-down-button{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.upvote-downvote{
+  width: 20px;
+  height: 20px;
 }

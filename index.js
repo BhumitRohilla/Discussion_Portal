@@ -34,7 +34,7 @@ class newQuestion {
     } else {
       obj.id = questionArr[questionArr.length - 1].id + 1;
     }
-
+    let currentDate = new Date;
     obj.subject = this.subjectInput.value;
     obj.question = this.question.value;
     obj.response = [];
@@ -46,6 +46,7 @@ class newQuestion {
     obj.question = obj.question.trim();
     obj.subject = obj.subject.trim();
     obj.vote = 0;
+    console.log("Hour:",obj.hour,"\nMinute:",obj.minute,"\nSecond",obj.second);
     if (obj.question == "" || obj.subject == "") {
       alert("Please Enter value");
     } else {
@@ -56,14 +57,14 @@ class newQuestion {
     this.clear();
   }
   print() {
-    console.log(this.question);
+    // console.log(this.question);
   }
 }
 
 class responsePage {
   constructor(data) {
     this.question = data;
-    console.log(this.question);
+    // console.log(this.question);
     this.questionTitle = document.createElement("h3");
     this.questionDiv = document.createElement("div");
     this.resolveBtn = document.createElement("button");
@@ -93,12 +94,7 @@ class responsePage {
     let string = data.question.slice();
     string = makeListWithBr(string);
     this.questionDiv.innerHTML = `<h3 class="response-section-heading p-5">${data.subject}</h3><p class="p-5">${string}</p>`;
-    let stringToAppend = "";
-    data.response.forEach(function (element) {
-      console.log(element);
-      stringToAppend += `<h3><button class=up-down-btn onclick=upvote_click(${element.id},${data.id})>+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id},${data.id})">-</button>${element.response}</p>`;
-    });
-    this.responseDiv.innerHTML = stringToAppend;
+    this.setResponse(data);
   }
   append(form) {
     form.appendChild(this.questionTitle);
@@ -115,7 +111,12 @@ class responsePage {
     let stringToAppend = "";
     data.response.forEach(function (element) {
       // console.log(element);
-      stringToAppend += `<h3><button class="up-down-btn" onclick="upvote_click(${element.id},${data.id})">+</button>${element.name}</h3><p><button class="up-down-btn" onclick="downvote_click(${element.id},${data.id})">-</button>${element.response}</p>`;
+      
+      let string = makeListWithBr(element.response);
+      stringToAppend += `<div class="response-div-main-container">`
+      stringToAppend +=  `<div class="response-up-down-button"><button class="up-down-btn" onclick="upvote_click(${element.id},${data.id})"><img class="upvote-downvote" src="./Image/upvote.png"></button><button class="up-down-btn" onclick="downvote_click(${element.id},${data.id})"><img class="upvote-downvote" src="./Image/downvote.png"></button></div>`
+      
+      stringToAppend += `<div class="response-div-child"><h3>${element.name}</h3><p>${string}</p></div></div>`;
     });
     this.responseDiv.innerHTML = stringToAppend;
     this.clear();
@@ -123,7 +124,7 @@ class responsePage {
   clear() {
     this.nameField.value = "";
     this.commentField.value = "";
-    console.log(this.nameField);
+    // console.log(this.nameField);
   }
 }
 
@@ -136,9 +137,8 @@ let searchBox = document.getElementById("search-box");
 let responsep = null;
 let intervalID;
 let showingFavourate = false;
-let currentDate = new Date();
-
-console.log(questionListDisp);
+let currentActive = null;
+// console.log(questionListDisp);
 
 window.addEventListener("load", function () {
   welcomePage = new newQuestion();
@@ -201,7 +201,7 @@ function makeList(element) {
     day += 30;
   }
 
-  console.log(day);
+  // console.log(day);
   holder += `<div class="TimerSpan">since <span class="Timer">`;
   holder += `few sec</span></div>`;
   // holder+=`<button class="favourate-btn" onclick="favourate(${element.id})">*</button>`
@@ -235,6 +235,9 @@ function makeList(element) {
 }
 
 function openBtn(id) {
+  removeCurrentSelection();
+  highlightSelected(id);
+
   let data = questionArr.filter(function (element) {
     if (element.id == id) {
       return true;
@@ -252,7 +255,7 @@ function openBtn(id) {
     let name = responsep.nameField.value;
     let response = responsep.commentField.value;
     name = name.trim();
-    console.log(name);
+    // console.log(name);
     response = response.trim();
     if (name == "" || response == "") {
       return;
@@ -271,6 +274,7 @@ newQuestionBtn.addEventListener("click", function () {
     });
   }
   welcomePage.clear();
+  removeCurrentSelection();
 });
 
 function deleteEntry(id) {
@@ -280,7 +284,7 @@ function deleteEntry(id) {
     }
     return true;
   });
-  console.log(questionArr);
+  // console.log(questionArr);
   document.getElementById(id).remove();
   localStorage.setItem("question", JSON.stringify(questionArr));
   let evt = new Event("click");
@@ -308,7 +312,7 @@ function addResponse(name, response, id, responsep) {
     return element;
   });
 
-  console.log(questionArr);
+  // console.log(questionArr);
 
   localStorage.setItem("question", JSON.stringify(questionArr));
 }
@@ -332,8 +336,8 @@ function addResponse(name, response, id, responsep) {
 // }
 
 function upvote_click(repId, id) {
-  console.log(responsep);
-  console.log(repId, "  ", id);
+  // console.log(responsep);
+  // console.log(repId, "  ", id);
   questionArr.forEach(function (element) {
     if (element.id == id) {
       element.response.forEach(function (rep) {
@@ -347,13 +351,13 @@ function upvote_click(repId, id) {
       responsep.setResponse(element);
     }
   });
-  console.log(questionArr);
+  // console.log(questionArr);
   localStorage.setItem("question", JSON.stringify(questionArr));
 }
 
 function downvote_click(repId, id) {
-  console.log(responsep);
-  console.log(repId, "  ", id);
+  // console.log(responsep);
+  // console.log(repId, "  ", id);
   questionArr.forEach(function (element) {
     if (element.id == id) {
       element.response.forEach(function (rep) {
@@ -367,16 +371,18 @@ function downvote_click(repId, id) {
       responsep.setResponse(element);
     }
   });
-  console.log(questionArr);
+  // console.log(questionArr);
   localStorage.setItem("question", JSON.stringify(questionArr));
 }
 
 function onKeyUp() {
   search(searchBox.value);
+  let evt = new Event("click");
+  newQuestionBtn.dispatchEvent(evt);
 }
 
 function search(val) {
-  console.log(val);
+  // console.log(val);
 
   if (val == "!FAV") {
     displayFav();
@@ -384,10 +390,10 @@ function search(val) {
   }
 
   if (val == "") {
-    console.log(questionArr);
+    // console.log(questionArr);
     questionListDisp.innerHTML = "";
     initialList(questionArr);
-    console.log(questionArr);
+    // console.log(questionArr);
     return;
   }
 
@@ -395,7 +401,7 @@ function search(val) {
 
   question = JSON.parse(localStorage.getItem("question"));
 
-  console.log(question);
+  // console.log(question);
 
   question = question.filter(function (element) {
     let heading = element.subject;
@@ -410,36 +416,36 @@ function search(val) {
     return false;
   });
 
-  console.log(question);
+  // console.log(question);
   searchListCreation(question, val);
 }
 
 function searchListCreation(list, val) {
-  console.log(list, val);
+  // console.log(list, val);
   let heading = list.heading;
 
-  console.log("searchListCreating");
+  // console.log("searchListCreating");
 
   list.forEach(function (element) {
-    console.log(element.subject);
-    console.log(element.question);
+    // console.log(element.subject);
+    // console.log(element.question);
     if (element.subject.includes(val)) {
       // console.log(element.subject.search(val));
       let index = element.subject.search(val);
       element.subject =
         element.subject.slice(0, index) +
-        "<span style='background-color:yellow'>" +
+        "<span style='background-color:blue; color:white'>" +
         element.subject.slice(index, val.length + index) +
         "</span>" +
         element.subject.slice(val.length + index);
-      console.log(element.subject);
+      // console.log(element.subject);
     }
     if (element.question.includes(val)) {
       let index = element.question.search(val);
-      console.log(element.question);
+      // console.log(element.question);
       element.question =
         element.question.slice(0, index) +
-        "<span style='background-color:yellow'>" +
+        "<span style='background-color:blue; color:white'>" +
         element.question.slice(index, val.length + index) +
         "</span>" +
         element.question.slice(val.length + index);
@@ -453,17 +459,17 @@ function favourate(id) {
   // console.log(svg);
   var button = document.getElementById(id);
   button = button.querySelector(".star-svg");
-  console.log(button.classList);
+  // console.log(button.classList);
   questionArr.forEach(function (element) {
     if (element.id == id) {
       if (element.favourate) {
         element.favourate = false;
         button.classList.remove("favourte-button-active");
-        console.log(button);
+        // console.log(button);
       } else {
         element.favourate = true;
         button.classList.add("favourte-button-active");
-        console.log(button);
+        // console.log(button);
       }
     }
   });
@@ -472,7 +478,7 @@ function favourate(id) {
 }
 
 function displayFav() {
-  console.log("Test");
+  // console.log("Test");
   questionListDisp.innerHTML = "";
   let favList = questionArr.filter(function (element) {
     if (element.favourate) {
@@ -487,7 +493,7 @@ function displayFav() {
 
 function favourateButtonPress() {
   let button = document.getElementById("favourate-button");
-  console.log(button);
+  // console.log(button);
   if (showingFavourate == false) {
     button.classList.add("favourte-button-active");
     showingFavourate = true;
@@ -497,7 +503,7 @@ function favourateButtonPress() {
     showingFavourate = false;
     questionListDisp.innerHTML = "";
     initialList(questionArr);
-    console.log(questionArr);
+    // console.log(questionArr);
   }
 }
 
@@ -542,7 +548,8 @@ function setTimeNow(element) {
 
 function changeTiming(arrayList) {
   let a = document.getElementsByClassName("Timer");
-  console.log(a);
+  // console.log(a);
+  let currentDate = new Date();
   let day = currentDate.getDate();
   let hour = currentDate.getHours();
   let minute = currentDate.getMinutes();
@@ -550,7 +557,7 @@ function changeTiming(arrayList) {
   let index = 0;
 
   Array.from(a).forEach(function (element) {
-    console.log(element.innerHTML);
+    // console.log(element.innerHTML);
     element.innerHTML = setTimeNow(arrayList[index]);
     // console.log(questionArr[index++]);
     index++;
@@ -558,6 +565,7 @@ function changeTiming(arrayList) {
 }
 
 function upVoteQuestion(id) {
+
   questionArr.forEach(function(element){
     if(element.id == id){
         if(element.vote == undefined) {
@@ -567,7 +575,7 @@ function upVoteQuestion(id) {
     }
   })
   questionArr.sort((a, b) => {
-    console.log(a.vote);
+    // console.log(a);
     return b.vote - a.vote;
   })
   
@@ -575,6 +583,9 @@ function upVoteQuestion(id) {
 
   initialList(questionArr);
   
+  if(currentActive!=null){
+    highlightSelected(currentActive);
+  }
 
   localStorage.setItem("question",JSON.stringify(questionArr));
 }
@@ -590,7 +601,7 @@ function downVoteQuestion(id) {
       }
     })
     questionArr.sort((a, b) => {
-      console.log(a.vote);
+      // console.log(a.vote);
       return b.vote - a.vote;
     })
     
@@ -600,6 +611,9 @@ function downVoteQuestion(id) {
     
   
     localStorage.setItem("question",JSON.stringify(questionArr));
+    if(currentActive!=null){
+      highlightSelected(currentActive);
+    }
   }
 
 
@@ -614,3 +628,28 @@ function downVoteQuestion(id) {
     }
     return newString;
   }
+
+
+function removeCurrentSelection(){
+  if(currentActive !=null ){
+    let child = document.getElementById(currentActive);
+    child = child.children;
+    child = child[0].children;
+    Array.from(child).forEach(function(element){
+      element.classList.remove("list-button-active");
+    });
+  }
+}
+
+function highlightSelected(id){
+  let child = document.getElementById(id).children;
+  console.log(child);
+  child = child[0].children;
+  Array.from(child).forEach(function(element){
+    element.classList.add("list-button-active");
+    console.log(element);
+  });
+  console.log(currentActive);
+  currentActive = id;
+  console.log(currentActive);
+}
