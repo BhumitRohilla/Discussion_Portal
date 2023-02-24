@@ -158,6 +158,7 @@ window.addEventListener("load", function () {
   } else {
     questionArr = [];
   }
+  searchBox.value = "";
 });
 
 function initialList(list) {
@@ -404,6 +405,7 @@ function search(val) {
   // console.log(question);
 
   question = question.filter(function (element) {
+    element.question = removeNextLineCharacter(element.question);
     let heading = element.subject;
     let questions = element.question;
 
@@ -411,11 +413,14 @@ function search(val) {
       return true;
     }
     if (questions.includes(val)) {
+      console.log(element.question);
+      
       return true;
     }
     return false;
   });
 
+  // console.log(question[0].question);
   // console.log(question);
   searchListCreation(question, val);
 }
@@ -652,4 +657,17 @@ function highlightSelected(id){
   console.log(currentActive);
   currentActive = id;
   console.log(currentActive);
+}
+
+function removeNextLineCharacter(string){
+  let result = "";
+  for(let i =0 ;i<string.length;++i){
+    if(string[i] == '\n'){
+      result+='';
+    }else{
+      result+=string[i];
+    }
+  }
+  console.log(result);
+  return result;
 }
