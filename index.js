@@ -502,6 +502,8 @@ function displayFav() {
 }
 
 function favourateButtonPress() {
+  searchBox.value = "";
+  console.log(searchBox);
   let button = document.getElementById("favourate-button");
   // console.log(button);
   if (showingFavourate == false) {
