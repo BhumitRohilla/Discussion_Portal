@@ -571,14 +571,25 @@ function changeTiming(arrayList) {
 
 function upVoteQuestion(id) {
 
+  let value ;
   questionArr.forEach(function(element){
     if(element.id == id){
         if(element.vote == undefined) {
             element.vote=0;
         }
         element.vote++;
+        value = element.vote;
     }
   })
+  if(searchBox.value!=""){
+    let elementToChange = document.getElementById(id);
+    let VoteDiv = elementToChange.getElementsByClassName("VoteShow")[0];
+    // console.log(VoteDiv);
+    VoteDiv.innerText = `Vote:${value}`;
+    // console.log(elementToChange);
+  }else{
+    initialList(questionArr);
+  }
   questionArr.sort((a, b) => {
     // console.log(a);
     return b.vote - a.vote;
@@ -586,7 +597,7 @@ function upVoteQuestion(id) {
   
 //   console.log(questionArr);
 
-  initialList(questionArr);
+  
   
   if(currentActive!=null){
     highlightSelected(currentActive);
