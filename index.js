@@ -138,6 +138,7 @@ let responsep = null;
 let intervalID;
 let showingFavourate = false;
 let currentActive = null;
+let favList=null;
 // console.log(questionListDisp);
 
 window.addEventListener("load", function () {
@@ -390,6 +391,10 @@ function search(val) {
     return;
   }
 
+  if(showingFavourate){
+    favourateButtonPress();
+  }
+
   if (val == "") {
     // console.log(questionArr);
     questionListDisp.innerHTML = "";
@@ -485,7 +490,7 @@ function favourate(id) {
 function displayFav() {
   // console.log("Test");
   questionListDisp.innerHTML = "";
-  let favList = questionArr.filter(function (element) {
+  favList = questionArr.filter(function (element) {
     if (element.favourate) {
       return true;
     } else {
