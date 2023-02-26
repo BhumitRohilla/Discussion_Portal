@@ -29,10 +29,8 @@ class newQuestion {
   }
   createElement() {
     let obj = {};
-    if (questionArr.length == 0) {
-      obj.id = 0;
-    } else {
-      obj.id = questionArr[questionArr.length - 1].id + 1;
+    {
+      obj.id = Math.floor(Math.random() * 1000000) + Math.floor(Math.random() * 10000) + Math.floor(Math.random() * 400) + Math.floor(Math.random() * 10) + 1;;
     }
     let currentDate = new Date;
     obj.subject = this.subjectInput.value;
@@ -46,7 +44,7 @@ class newQuestion {
     obj.question = obj.question.trim();
     obj.subject = obj.subject.trim();
     obj.vote = 0;
-    console.log("Hour:",obj.hour,"\nMinute:",obj.minute,"\nSecond",obj.second);
+    // console.log("Hour:",obj.hour,"\nMinute:",obj.minute,"\nSecond",obj.second);
     if (obj.question == "" || obj.subject == "") {
       alert("Please Enter value");
     } else {
@@ -291,6 +289,7 @@ function deleteEntry(id) {
   localStorage.setItem("question", JSON.stringify(questionArr));
   let evt = new Event("click");
   newQuestionBtn.dispatchEvent(evt);
+  currentActive = null;
 }
 
 function addResponse(name, response, id, responsep) {
@@ -418,7 +417,7 @@ function search(val) {
       return true;
     }
     if (questions.includes(val)) {
-      console.log(element.question);
+      // console.log(element.question);
       
       return true;
     }
@@ -503,7 +502,7 @@ function displayFav() {
 
 function favourateButtonPress() {
   searchBox.value = "";
-  console.log(searchBox);
+  // console.log(searchBox);
   let button = document.getElementById("favourate-button");
   // console.log(button);
   if (showingFavourate == false) {
@@ -666,15 +665,15 @@ function removeCurrentSelection(){
 
 function highlightSelected(id){
   let child = document.getElementById(id).children;
-  console.log(child);
+  // console.log(child);
   child = child[0].children;
   Array.from(child).forEach(function(element){
     element.classList.add("list-button-active");
-    console.log(element);
+    // console.log(element);
   });
-  console.log(currentActive);
+  // console.log(currentActive);
   currentActive = id;
-  console.log(currentActive);
+  // console.log(currentActive);
 }
 
 function removeNextLineCharacter(string){
@@ -686,6 +685,6 @@ function removeNextLineCharacter(string){
       result+=string[i];
     }
   }
-  console.log(result);
+  // console.log(result);
   return result;
 }
